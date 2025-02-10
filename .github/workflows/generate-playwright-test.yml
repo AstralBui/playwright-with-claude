@@ -1,0 +1,38 @@
+name: Generate Playwright Test with Claude
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  generate-playwright-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install Playwright
+        run: npm install -D @playwright/test
+
+      - name: Generate Playwright Test using Claude API
+        env:
+          CLAUDE_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
+        run: |
+          curl -X POST "https://api.anthropic.com/v1/messages" \
+          -H "x-api-key: $CLAUDE_API_KEY" \
+          -H "Content-Type: application/json" \
+          -H "anthropic-version: 2023-06-01" \
+          -d '{
+                "model": "claude-2",
+                "prompt": "Generate a Playwright test for a login page where the user enters a username and password and clicks submit. Include assertions.",
+                "max_tokens": 1000
+              }' > playwright-test.spec.ts
+
+      - name: Run Playwright Test
+        run: npx playwright test
