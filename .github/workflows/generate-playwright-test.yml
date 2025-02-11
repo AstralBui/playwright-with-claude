@@ -25,14 +25,14 @@ jobs:
           CLAUDE_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
         run: |
           RESPONSE=$(curl -X POST "https://api.anthropic.com/v1/messages" \
-          -H "x-api-key: $CLAUDE_API_KEY" \
-          -H "Content-Type: application/json" \
-          -H "anthropic-version: 2023-06-01" \
-          -d '{
-                "model": "claude-2",
-                "messages": [{"role": "user", "content": "Generate a Playwright test for a login page where the user enters a username and password and clicks submit. Output only pure TypeScript code, no explanations, no markdown syntax."}],
-                "max_tokens": 1000
-              }')
+            -H "x-api-key: $CLAUDE_API_KEY" \
+            -H "Content-Type: application/json" \
+            -H "anthropic-version: 2023-06-01" \
+            -d '{
+              "model": "claude-2",
+              "messages": [{"role": "user", "content": "Generate a Playwright test for a login page where the user enters a username and password and clicks submit. Output only pure TypeScript code, no explanations, no markdown syntax."}],
+              "max_tokens": 1000
+            }')
 
           echo "$RESPONSE" | jq -r '.content' > playwright-test.spec.ts
 
