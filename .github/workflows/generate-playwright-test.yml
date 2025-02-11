@@ -39,7 +39,7 @@ jobs:
 
           echo "$RESPONSE" | jq -r '.content' > playwright-test.spec.ts
 
-      - name: Debug: Print Generated Test File
+      - name: "Debug: Print Generated Test File"
         run: |
           cat playwright-test.spec.ts
 
