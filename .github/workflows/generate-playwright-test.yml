@@ -28,11 +28,14 @@ jobs:
             -H "x-api-key: $CLAUDE_API_KEY" \
             -H "Content-Type: application/json" \
             -H "anthropic-version: 2023-06-01" \
-            -d '{
-              "model": "claude-2",
-              "messages": [{"role": "user", "content": "Generate a Playwright test for a login page where the user enters a username and password and clicks submit. Output only pure TypeScript code, no explanations, no markdown syntax."}],
-              "max_tokens": 1000
-            }')
+            --data @- <<EOF
+          {
+            "model": "claude-2",
+            "messages": [{"role": "user", "content": "Generate a Playwright test for a login page where the user enters a username and password and clicks submit. Output only pure TypeScript code, no explanations, no markdown syntax."}],
+            "max_tokens": 1000
+          }
+          EOF
+          )
 
           echo "$RESPONSE" | jq -r '.content' > playwright-test.spec.ts
 
