@@ -30,11 +30,17 @@ jobs:
           -H "anthropic-version: 2023-06-01" \
           -d '{
                 "model": "claude-2",
-                "messages": [{"role": "user", "content": "Generate a Playwright test for a login page where the user enters a username and password and clicks submit. Include assertions."}],
+                "messages": [{"role": "user", "content": "Generate a Playwright test for a login page where the user enters a username and password and clicks submit. Output only pure TypeScript code, no explanations, no markdown syntax."}],
                 "max_tokens": 1000
               }')
-              
+
           echo "$RESPONSE" | jq -r '.content' > playwright-test.spec.ts
 
+      - name: Debug: Print Generated Test File
+        run: cat playwright-test.spec.ts
+
+      - name: Verify Test File Exists
+        run: ls -lah
+
       - name: Run Playwright Test
-        run: npx playwright test
+        run: npx playwright test playwright-test.spec.ts
