@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   generate-playwright-test:
     runs-on: ubuntu-latest
@@ -25,18 +28,21 @@ jobs:
           CLAUDE_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
         run: |
           RESPONSE=$(curl -X POST "https://api.anthropic.com/v1/messages" \
-            -H "x-api-key: $CLAUDE_API_KEY" \
-            -H "Content-Type: application/json" \
+            -H "x-api-key: ${CLAUDE_API_KEY}" \
+            -H "content-type: application/json" \
             -H "anthropic-version: 2023-06-01" \
-            --data @- <<EOF
+            -d @- <<EOF
           {
             "model": "claude-2",
-            "messages": [{"role": "user", "content": "Generate a Playwright test for a login page where the user enters a username and password and clicks submit. Output only pure TypeScript code, no explanations, no markdown syntax."}],
+            "messages": [{"role": "user", "content": "Generate a Playwright test for a login page where the user enters a username and password and clicks submit. Output only pure TypeScript code."}],
             "max_tokens": 1000
           }
           EOF
           )
-
+          if [ $? -ne 0 ]; then
+            echo "Curl command failed"
+            exit 1
+          fi
           echo "$RESPONSE" | jq -r '.content' > playwright-test.spec.ts
 
       - name: "Debug: Print Generated Test File"
