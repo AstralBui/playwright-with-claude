@@ -40,10 +40,13 @@ jobs:
           echo "$RESPONSE" | jq -r '.content' > playwright-test.spec.ts
 
       - name: Debug: Print Generated Test File
-        run: cat playwright-test.spec.ts
+        run: |
+          cat playwright-test.spec.ts
 
       - name: Verify Test File Exists
-        run: ls -lah
+        run: |
+          ls -lah
 
       - name: Run Playwright Test
-        run: npx playwright test playwright-test.spec.ts
+        run: |
+          npx playwright test playwright-test.spec.ts
