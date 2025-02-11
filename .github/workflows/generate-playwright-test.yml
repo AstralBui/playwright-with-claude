@@ -20,8 +20,26 @@ jobs:
         with:
           node-version: 18
 
+      - name: Initialize Node.js project
+        run: npm init -y
+
       - name: Install Playwright
         run: npm install -D @playwright/test
+
+      - name: Create Playwright config
+        run: |
+          cat > playwright.config.ts << EOF
+          import { defineConfig } from '@playwright/test';
+
+          export default defineConfig({
+            testDir: './',
+            use: {
+              headless: true,
+              viewport: { width: 1280, height: 720 },
+              ignoreHTTPSErrors: true,
+            },
+          });
+          EOF
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
