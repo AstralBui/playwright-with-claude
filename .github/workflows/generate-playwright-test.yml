@@ -30,7 +30,7 @@ jobs:
           -H "anthropic-version: 2023-06-01" \
           -d '{
                 "model": "claude-2",
-                "prompt": "Generate a Playwright test for a login page where the user enters a username and password and clicks submit. Include assertions.",
+                "messages": [{"role": "user", "content": "Generate a Playwright test for a login page where the user enters a username and password and clicks submit. Include assertions."}],
                 "max_tokens": 1000
               }' > playwright-test.spec.ts
 
