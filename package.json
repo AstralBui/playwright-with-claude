@@ -1,0 +1,13 @@
+{
+  "name": "claude-playwright-github-actions",
+  "version": "1.0.0",
+  "description": "Integration of Claude AI with Playwright in GitHub Actions",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.18.0",
+    "@playwright/test": "^1.40.0"
+  }
+}
